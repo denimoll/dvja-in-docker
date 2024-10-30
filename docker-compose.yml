@@ -1,0 +1,26 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.5
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ec95c258266b8e985848cae688effa2b
+  app:
+    build: .
+    depends_on:
+      - mysql
+      - nginx
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ec95c258266b8e985848cae688effa2b
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/ssl
+volumes:
+  mysql:
